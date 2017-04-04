@@ -9,7 +9,7 @@
 		<!-- <link rel="icon" href="https://milligram.github.io/images/icon.png"> -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
-		<link rel="stylesheet" href="dist/milligram.min.css">
+		<link rel="stylesheet" href="css/milligram.min.css">
 		<link rel="stylesheet" href="https://milligram.github.io/styles/main.css">
 	</head>
 	<body>
@@ -93,14 +93,13 @@ tasks:
 <pre>
 <code>
 {
-  "name": "Hello Demo",
-  "currentTask": 3,
-  "completionDate": "2017-04-03T06:02:01+0000",
   "id": "396ab4b863244dd5bf376813d94f9932",
-  "creationDate": "2017-04-03T06:01:51+0000",
-  "startDate": "2017-04-03T06:01:51+0000",
+  "name": "Hello Demo",
   "pipelineId": "demo/hello:7b911fe",
   "status": "COMPLETED",
+  "completionDate": "2017-04-03T06:02:01+0000",
+  "creationDate": "2017-04-03T06:01:51+0000",
+  "startDate": "2017-04-03T06:01:51+0000"
   "execution": [
     {
       "startInclusive": 0,
@@ -152,6 +151,35 @@ tasks:
   ]
 }
 </code>
+</pre>
+				<h5 class="title"><strong>Architecture</strong></h5>
+				<p></p>
+<pre>
+
+
+    +---------------+ 
+    |               | 
+    |               | 
+    |   Database    | 
+    |               |     
+    |               |      
+    +---------------+
+    
+            ^
+            ^
+            ^      
+                                                         +--------------+
+                                                         |              |
+    +---------------+       +---------------+       +---------------+   |
+    |               |       |               |       |               |   |
+    |               |       |   Messaging   |       |               |   |
+    |  Coordinator  | <-->  |    Broker     | <-->  |    Worker     |   |
+    |               |       |               |       |               |---+
+    |               |       |               |       |               |
+    +---------------+       +---------------+       +---------------+
+    
+    
+
 </pre>
 			</section>
 
