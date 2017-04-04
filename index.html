@@ -130,8 +130,9 @@ tasks:
 				by the Coordinator. When a Worker is done with the task, it sends a message to the Coordinator &mdash; reporting the completion. The Coordinator then picks up
 				the overall job associated with that task and dolls out the next task to be done to a Worker until the job is completed.</p>
 				
-				<p>The Coordinator and Workers do not talk to each other directly. Instead a <strong>Messaging Queue Broker</strong> is used for queuing up tasks to workers 
-				and for reporting back completions</p>
+				<p>The Coordinator and workers do not talk to each other directly. Instead a <strong>Messaging Queue Broker</strong> is used between them to talk. 
+				Workers subsctibe to the various work queues by their types to recieve work. This allows Piper to scale horizontally by simply adding more workers as the work
+				load increases.</p>
 <pre>
 
     +-------------+ 
