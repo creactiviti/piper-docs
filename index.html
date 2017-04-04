@@ -29,10 +29,12 @@
 				<h5 class="title"><strong>Introduction</strong></h5>
 				<p>Piper is a minimal workflow engine designed to be dead simple.</p>
 				<h5 class="title"><strong>How does it work?</strong></h5>
-				<p>Piper works by executing a set of tasks defined as a YAML document.</p>
+				<p>Piper works by executing a pipeline which is basically a list of tasks defined as a YAML document and executed one after the other. 
+				Pipelines can be sourced from many locations but typically they live on a Git repository where they can be versioned and tracked.</p>
+				<p>Here's an example of a very simple pipeline:</p>
 				<pre><code>name: Hello Demo
 
-input:
+input: // this defines the input which the pipeline is expecting
   - name: yourName
     label: Your Name
     type: string
@@ -51,7 +53,7 @@ tasks:
 
   - label: Sleep a little
     type: sleep
-    millis: ${randomNumber}
+    millis: ${randomNumber} // tasks may refer to the result of a previous task
 
   - label: Print a farewell
     type: print
