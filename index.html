@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="author" content="CJ Patoilo">
 		<meta name="description" content="Milligram provides a minimal setup of styles for a fast and clean starting point. Specially designed for better performance and higher productivity with fewer properties to reset resulting in cleaner code.">
-		<title>Piper | A miniature workflow engine.</title>
+		<title>Piper | A minimalist workflow engine.</title>
 		<!-- <link rel="icon" href="https://milligram.github.io/images/icon.png"> -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
@@ -18,7 +18,7 @@
 
 			<nav class="navigation">
 				<section class="container">
-					<a class="navigation-title" href="https://milligram.github.io/">
+					<a class="navigation-title" href="#">
 						&nbsp;
 						<h1 class="title">Piper</h1>
 					</a>
@@ -27,7 +27,7 @@
 
 			<section class="container" id="introduction">
 				<h5 class="title"><strong>Introduction</strong></h5>
-				<p>Piper is a miniature workflow engine designed to be dead simple.</p>
+				<p>Piper is a minimal workflow engine designed to be dead simple.</p>
 				<h5 class="title"><strong>How does it work?</strong></h5>
 				<p>Piper works by executing a set of tasks defined as a YAML document.</p>
 				<pre><code>name: Hello Demo
@@ -57,6 +57,100 @@ tasks:
     type: print
     text: Goodbye ${yourName}
 				</code></pre>
+				<h5 class="title"><strong>Start a Job</strong></h5>
+				<p>URL:</p>
+				<p>
+				  <code>POST /jobs/start</code>
+				</p>
+				<p>Body:</p>
+<pre><code>{
+  "pipeline": "demo/hello",
+  "yourName": "Arik"
+}
+</code></pre>
+<p>Response:</p>
+<pre>
+<code>
+{
+  "name": "Hello Demo",
+  "currentTask": 0,
+  "id": "396ab4b863244dd5bf376813d94f9932",
+  "creationDate": "2017-04-03T06:01:51+0000",
+  "startDate": "2017-04-03T06:01:51+0000",
+  "pipelineId": "demo/hello:7b911fe",
+  "status": "STARTED"
+}
+</code>
+</pre>
+<h5 class="title"><strong>Check Job Status</strong></h5>
+<p>URL:</p>
+<p>
+  <code>GET /jobs/{JOB_ID}</code>
+</p>
+<p>Response:</p>
+<pre>
+<code>
+{
+  "name": "Hello Demo",
+  "currentTask": 3,
+  "completionDate": "2017-04-03T06:02:01+0000",
+  "id": "396ab4b863244dd5bf376813d94f9932",
+  "creationDate": "2017-04-03T06:01:51+0000",
+  "startDate": "2017-04-03T06:01:51+0000",
+  "pipelineId": "demo/hello:7b911fe",
+  "status": "COMPLETED",
+  "execution": [
+    {
+      "startInclusive": 0,
+      "label": "Generate a random number",
+      "type": "randomInt",
+      "creationDate": "2017-04-03T06:01:51+0000",
+      "output": 8495,
+      "jobId": "396ab4b863244dd5bf376813d94f9932",
+      "name": "randomNumber",
+      "endInclusive": 10000,
+      "completionDate": "2017-04-03T06:01:51+0000",
+      "taskNumber": 0,
+      "id": "fbd8bdaa63b54ffeb4c928ceb04de48a",
+      "status": "COMPLETED"
+    },
+    {
+      "jobId": "396ab4b863244dd5bf376813d94f9932",
+      "completionDate": "2017-04-03T06:01:52+0000",
+      "label": "Print a greeting",
+      "text": "Hello Arik",
+      "taskNumber": 1,
+      "id": "fa8342b300a04a09ad77e73066886628",
+      "type": "print",
+      "creationDate": "2017-04-03T06:01:52+0000",
+      "status": "COMPLETED"
+    },
+    {
+      "jobId": "396ab4b863244dd5bf376813d94f9932",
+      "completionDate": "2017-04-03T06:02:01+0000",
+      "label": "Sleep a little",
+      "taskNumber": 2,
+      "id": "bade523960d142f492c78465eba1ff02",
+      "type": "sleep",
+      "millis": 8495,
+      "creationDate": "2017-04-03T06:01:52+0000",
+      "status": "COMPLETED"
+    },
+    {
+      "jobId": "396ab4b863244dd5bf376813d94f9932",
+      "completionDate": "2017-04-03T06:02:01+0000",
+      "label": "Print a farewell",
+      "text": "Goodbye Arik",
+      "taskNumber": 3,
+      "id": "9d2d3b68b6074c34babea0c3077a78cc",
+      "type": "print",
+      "creationDate": "2017-04-03T06:02:01+0000",
+      "status": "COMPLETED"
+    }
+  ]
+}
+</code>
+</pre>
 			</section>
 
 
