@@ -121,28 +121,36 @@ tasks:
 </code>
 </pre>
 				<h5 class="title"><strong>Architecture</strong></h5>
-				<p>Piper is based on a few</p>
+				<p>Piper is based on a Coordinator/Worker model.</p>
+				<p>The <strong>Coordinator</strong> is the component responsible for accepting jobs to be executed, for distributing the tasks to workers
+				and for generally keeping track on where jobs are at.</p>
+				<p><strong>Workers</strong> on the other hand are not aware of jobs as such and are only responsible for executing a single task given to them
+				by the Coordinator. When a Worker is done with the task, it sends a message to the Coordinator &mdash; reporting the completion. The Coordinator then picks up
+				the overall job associated with that task and dolls out the next task to be done to a Worker until the job is completed.</p>
 <pre>
 
-    +----------+ 
-    |          | 
-    | Database | 
-    |          |           
-    +----------+
-    
-         ^
-         ^
-         ^      
-    +-------------+      +-----------+      +-----------+ 
-    |             |      |           |      |           |
-    | Coordinator | <--> |  Broker   | <--> |  Worker   |
-    |             |      |           |      |           |
-    +-------------+      +-----------+      +-----------+
+    +-------------+ 
+    |             | 
+    |  Database   | 
+    |             |           
+    +-------------+
+      
+           ^      
+    +-------------+      +--------+      +--------+ 
+    |             |      |        |      |        |
+    | Coordinator | <--> | Broker | <--> | Worker |
+    |             |      |        |      |        |
+    +-------------+      +--------+      +--------+
     
     
 </pre>
 			</section>
-
+			
+			<footer class="footer">
+			  <section class="container">
+				<p>Designed with ♥ by<a href="http://creactiviti.com" title="Arik Cohen" target="_blank"> creactiviti</a>.</p>
+			  </section>
+			</footer>
 
 		</main>
 
