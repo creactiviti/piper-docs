@@ -122,11 +122,16 @@ tasks:
 </pre>
 				<h5 class="title"><strong>Architecture</strong></h5>
 				<p>Piper is based on a Coordinator/Worker model.</p>
-				<p>The <strong>Coordinator</strong> is the component responsible for accepting jobs to be executed, for distributing the tasks to workers
+				
+				<p>The <strong>Coordinator</strong> is the component responsible for accepting jobs to be executed, for distributing the tasks to workers through queues
 				and for generally keeping track on where jobs are at.</p>
-				<p><strong>Workers</strong> on the other hand are not aware of jobs as such and are only responsible for executing a single task given to them
+				
+				<p>The <strong>Worker</strong> on the other hand is not aware of jobs as such and is only responsible for executing a single task given to it
 				by the Coordinator. When a Worker is done with the task, it sends a message to the Coordinator &mdash; reporting the completion. The Coordinator then picks up
 				the overall job associated with that task and dolls out the next task to be done to a Worker until the job is completed.</p>
+				
+				<p>The Coordinator and Workers do not talk to each other directly. Instead a <strong>Messaging Queue Broker</strong> is used for queuing up tasks to workers 
+				and for reporting back completions</p>
 <pre>
 
     +-------------+ 
