@@ -9,7 +9,7 @@
 		<!-- <link rel="icon" href="https://milligram.github.io/images/icon.png"> -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
-		<link rel="stylesheet" href="css/milligram.min.css">
+		<link rel="stylesheet" href="css/milligram.css">
 		<link rel="stylesheet" href="https://milligram.github.io/styles/main.css">
 	</head>
 	<body>
@@ -25,38 +25,84 @@
 
 			<section class="container" id="introduction">
 				<h5 class="title"><strong>Introduction</strong></h5>
+				
 				<p>Piper is a distributed workflow engine designed to be dead simple.</p>
-				<h5 class="title"><strong>How does it work?</strong></h5>				
+				
+				<h5 class="title"><strong>How does it work?</strong></h5>		
+						
 				<p>In Piper, work to be done is defined as a set of tasks called a Pipeline. 
 				Pipelines can be sourced from many locations but typically they live on a Git repository where they can be versioned and tracked.</p>
-				<p>Here's an example of a very simple pipeline:</p>
+				
+				<h5 class="title"><strong>Principles</strong></h5>
+				
+				<ul>
+				    <li><strong>Simple:</strong> Piper pipelines are written in plain YAML and do not require any specialized high-level language knowledge.</li>
+				    <li><strong>Extensible:</strong> Easily define your own task types and extend the system so that it fits the level of abstraction that suits your environment.</li>
+				    <li><strong>Elegant:</strong> Piper pipelines are lean and explicit. Parameterizing them is built into the core of Piper using a powerful templating engine.</li>
+					<li><strong>Scalable:</strong> Piper has a modular architecture and uses a message queue to orchestrate an arbitrary number of workers. Piper is ready to scale to infinity.</li>
+				</ul>
+				
+				<h5 class="title"><strong>Tasks</strong></h5>
+				
+				<p>Tasks are the basic building blocks of a pipeline. Each task has a <code>type</code> property which maps to a 
+				<code>TaskHandler</code> implementation which is responsible for carrying out the task.</p>
+				
+				<p>For example here's the <code>randomInt</code> <code>TaskHandler</code> implementation:</p>
+				
+				<pre>
+				
+  public class RandomInt implements <strong>TaskHandler</strong> {
+
+    @Override
+    public Object handle(JobTask aTask) throws Exception {
+      int startInclusive = aTask.getInteger("startInclusive", 0);
+      int endInclusive = aTask.getInteger("endInclusive", 100);
+      return RandomUtils.nextInt(startInclusive, endInclusive);
+    }
+
+  }		
+				</pre> 
+				
+				<p>While it doesn't do much beyond generating a random integer, it does 
+				demonstrate how a <code>TaskHandler</code> works. a <code>JobTask</code> instance is passed as 
+				an argument to the <code>TaskHandler</code> which contains all the Key-Value pairs of that task.
+				The <code>TaskHandler</code> is then responsible for executing the task using its input and 
+				optionally returning a result which can be used by the pipeline's tasks downstream.   
+				</p>
+				
+				<h5 class="title"><strong>Tutorial</strong></h5>
+								
+				<p>This tutorial walks you through some of the fundamental Piper concepts, objects, and their usage while writing your first pipeline.</p>
+				
+				<p>Here is an example of a basic pipeline definition.</p>
 				<pre><code>name: Hello Demo
 
-input: // this defines the input which the pipeline is expecting
-  - name: yourName
-    label: Your Name
-    type: string
-    required: true
+input:                 --+
+  - name: yourName       |
+    label: Your Name     | - This defined the input
+    type: string         |   expected by the pipeline
+    required: true     --+
 
-tasks:
-  - name: randomNumber
-    label: Generate a random number
-    type: randomInt
-    startInclusive: 0
-    endInclusive: 10000
+tasks: 
+  - name: randomNumber               --+
+    label: Generate a random number    |
+    type: randomInt                    | - This is a task
+    startInclusive: 0                  |
+    endInclusive: 10000              --+
 
   - label: Print a greeting
     type: print
     text: Hello ${yourName}
 
   - label: Sleep a little
-    type: sleep
-    millis: ${randomNumber} // tasks may refer to the result of a previous task
-
+    type: sleep             --+
+    millis: ${randomNumber}   | - tasks may refer to the result of a previous task
+                            --+
   - label: Print a farewell
     type: print
     text: Goodbye ${yourName}
 				</code></pre>
+								
 				<h5 class="title"><strong>Start a Job</strong></h5>
 				<p>URL:</p>
 				<p>
@@ -131,28 +177,12 @@ tasks:
 				<p>The Coordinator and workers do not talk to each other directly. Instead a <strong>Messaging Queue Broker</strong> is used between them to talk. 
 				Workers subsctibe to the various work queues by their types to recieve work. This allows Piper to scale horizontally by simply adding more workers as the work
 				load increases.</p>
-<pre>
 
-    +-------------+ 
-    |             | 
-    |  Database   | 
-    |             |           
-    +-------------+
-      
-           ^      
-    +-------------+      +--------+      +--------+ 
-    |             |      |        |      |        |
-    | Coordinator | <--> | Broker | <--> | Worker |
-    |             |      |        |      |        |
-    +-------------+      +--------+      +--------+
-    
-    
-</pre>
 			</section>
 			
 			<footer class="footer">
 			  <section class="container">
-				<p>Designed with ♥ by<a href="http://creactiviti.com" title="Arik Cohen" target="_blank"> creactiviti</a>.</p>
+				<p>Designed by<a href="http://creactiviti.com" title="Arik Cohen" target="_blank"> creactiviti</a>.</p>
 			  </section>
 			</footer>
 
