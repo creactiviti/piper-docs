@@ -47,7 +47,7 @@
 				<p>Tasks are the basic building blocks of a pipeline. Each task has a <code>type</code> property which maps to a 
 				<code>TaskHandler</code> implementation which is responsible for carrying out the task.</p>
 				
-				<p>For example here's the <code>randomInt</code> <code>TaskHandler</code> implementation:</p>
+				<p>For example here's the <code>RandomInt</code> <code>TaskHandler</code> implementation:</p>
 				
 				<pre>
 				
@@ -55,9 +55,9 @@
 
     @Override
     public Object handle(JobTask aTask) throws Exception {
-      int startInclusive = aTask.getInteger("startInclusive", 0);
-      int endInclusive = aTask.getInteger("endInclusive", 100);
-      return RandomUtils.nextInt(startInclusive, endInclusive);
+      int start = aTask.getInteger("startInclusive", 0);
+      int end = aTask.getInteger("endInclusive", 100);
+      return RandomUtils.nextInt(start, end);
     }
 
   }		
