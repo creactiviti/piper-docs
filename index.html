@@ -89,11 +89,11 @@ tasks:
     type: randomInt                    | - This is a task
     startInclusive: 0                  |
     endInclusive: 10000              --+
-
-  - label: Print a greeting
-    type: print
-    text: Hello ${yourName}
-
+                            
+  - label: Print a greeting 
+    type: print             
+    text: Hello ${yourName} 
+                           
   - label: Sleep a little
     type: sleep             --+
     millis: ${randomNumber}   | - tasks may refer to the result of a previous task
@@ -103,7 +103,30 @@ tasks:
     text: Goodbye ${yourName}
 				</code></pre>
 								
-				<h5 class="title"><strong>Start a Job</strong></h5>
+				<p>So tasks are nothing but a collection of key-value 
+				pairs. At a minimum each task contains a <code>type</code> property 
+				which noitifies Piper on the name of the appropriate <code>TaskHandler</code>
+				that needs to execute it.</p>
+				
+				<p>Tasks may also specify a <code>name</code> property which can be used to name the output
+				of the task so it can be used later in the pipeline.</p>
+				
+				<p>The <code>label</code> property is used to give a human-readble description for the task.</p>
+				
+				<p>The <code>node</code> property can be used to route tasks to work queues other than the default <code>tasks</code> queue.
+				This allows one to design a cluster of worker nodes of different types, of different capacity, different 3rd party software 
+				dependencies and so on.</p>
+
+				<p>All other key-value pairs are task-specific and may or may not be required depending on the 
+				specific task.</p>
+				
+				<h5 class="title"><strong>Starting a job</strong></h5>
+				
+				<p>Jobs are started by calling the <code>/jobs/start</code> endpoint, specifying the <code>pipeline</code> ID 
+				and the inputs expected by the pipeline as the request body.</p>
+				
+				<p>Piper will start the job asynchronously and provide us with a Job ID we can use to query for status.</p>
+				
 				<p>URL:</p>
 				<p>
 				  <code>POST /jobs/start</code>
@@ -128,19 +151,20 @@ tasks:
 }
 </code>
 </pre>
-<h5 class="title"><strong>Check Job Status</strong></h5>
-<p>URL:</p>
-<p>
-  <code>GET /jobs/{JOB ID}</code>
-</p>
-<p>Response:</p>
+				<h5 class="title"><strong>Check Job Status</strong></h5>
+				
+				<p>URL:</p>
+				<p>
+				  <code>GET /jobs/{JOB ID}</code>
+				</p>
+				<p>Response:</p>
 <pre>
 <code>
 {
   "id": "396ab4b863244dd5bf376813d94f9932",
   "name": "Hello Demo",
   "pipelineId": "demo/hello:7b911fe",
-  "status": "COMPLETED",
+  "status": <strong>"COMPLETED"</strong>,
   "completionDate": "2017-04-03T06:02:01+0000",
   "creationDate": "2017-04-03T06:01:51+0000",
   "startDate": "2017-04-03T06:01:51+0000"
