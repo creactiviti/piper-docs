@@ -230,7 +230,6 @@ tasks:
 				<p><strong>Each</strong></p>
 				
 				<p>Applies the function <code>iteratee</code> to each item in <code>list</code>, in parallel. 
-				   
 				   Note, that since this function applies <code>iteratee</code> to each item in parallel, 
 				   there is no guarantee that the <code>iteratee</code> functions will complete in order.</p>
 
@@ -244,6 +243,44 @@ tasks:
 
 				<p>This will generate three parallel tasks, one for each items in the list, which will <code>sleep</code> for 1, 2 and 3 seconds respectively.</p>
 
+				<p><strong>Parallel</strong></p>
+				
+				<p>Run the <code>tasks</code> collection of functions in parallel, without waiting until the previous function has completed.</p>
+				
+<pre><code>- type: parallel
+  tasks: 
+    - type: print
+      millis: hello
+        
+    - type: print
+      text: goodbye
+</code></pre>
+
+				<p><strong>Fork/Join</strong></p>
+				
+				<p>Executes each branch in the <code>branches</code> as a seperate and isolated sub-flow. Branches are executed in sequence.</p>
+				
+<pre><code>- type: fork
+  branches: 
+     - - name: randomNumber                 &lt;-- branch 1 start here
+         label: Generate a random number
+         type: randomInt
+         startInclusive: 0
+         endInclusive: 5000
+           
+       - type: sleep
+         millis: ${randomNumber}
+           
+     - - name: randomNumber                 &lt;-- branch 2 start here
+         label: Generate a random number
+         type: randomInt
+         startInclusive: 0
+         endInclusive: 5000
+           
+       - type: sleep
+         millis: ${randomNumber}
+</code></pre>
+				
 				
 
 			</section>
