@@ -224,6 +224,27 @@ tasks:
 				<p>The Coordinator and workers do not talk to each other directly. Instead a <strong>Messaging Queue Broker</strong> is used between them to talk. 
 				Workers subsctibe to the various work queues by their types to recieve work. This allows Piper to scale horizontally by simply adding more workers as the work
 				load increases.</p>
+				
+				
+				<h5 class="title"><strong>Control Flow</strong></h5>
+				<p><strong>Each</strong></p>
+				
+				<p>Applies the function <code>iteratee</code> to each item in <code>list</code>, in parallel. 
+				   
+				   Note, that since this function applies <code>iteratee</code> to each item in parallel, 
+				   there is no guarantee that the <code>iteratee</code> functions will complete in order.</p>
+
+<pre>
+<code>- type: each
+  list: [1000,2000,3000]
+  iteratee:
+    type: sleep         
+    millis: ${item}
+</code></pre>
+
+				<p>This will generate three parallel tasks, one for each items in the list, which will <code>sleep</code> for 1, 2 and 3 seconds respectively.</p>
+
+				
 
 			</section>
 			
