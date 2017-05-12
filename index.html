@@ -51,16 +51,16 @@
 				
 				<pre>
 				
-  public class RandomInt implements <strong>TaskHandler</strong> {
+  public class RandomInt implements TaskHandler&lt;Object&gt; {
 
     @Override
-    public Object handle(JobTask aTask) {
-      int start = aTask.getInteger("start", 0);
-      int end = aTask.getInteger("end", 100);
-      return RandomUtils.nextInt(start, end);
+    public Object handle(Task aTask) throws Exception {
+      int startInclusive = aTask.getInteger("startInclusive", 0);
+      int endInclusive = aTask.getInteger("endInclusive", 100);
+      return RandomUtils.nextInt(startInclusive, endInclusive);
     }
-
-  }		
+    
+  }
 				</pre> 
 				
 				<p>While it doesn't do much beyond generating a random integer, it does 
@@ -134,35 +134,38 @@ tasks:
 				
 				<h5 class="title"><strong>Starting a job</strong></h5>
 				
-				<p>Jobs are started by calling the <code>/jobs/start</code> endpoint, specifying the <code>pipeline</code> ID 
-				and the inputs expected by the pipeline as the request body.</p>
+				<p>Jobs are started by calling the <code>/jobs</code> endpoint, specifying the <code>pipelineId</code>,  
+				the <code>inputs</code> expected by the pipeline and optional <code>tags</code> as the request body.</p>
 				
 				<p>Piper will start the job asynchronously and provide us with a Job ID we can use to query for status.</p>
 				
 				<p>URL:</p>
 				<p>
-				  <code>POST /jobs/start</code>
+				  <code>POST /jobs</code>
 				</p>
 				<p>Body:</p>
 <pre><code>{
-  "pipeline": "demo/hello",
-  "yourName": "Arik"
+  "pipelineId": "demo/hello",
+  "tags": ["hello", "world"],
+  "inputs": {
+    "yourName": "me"
+  }
 }
 </code></pre>
 <p>Response:</p>
 <pre>
-<code>
-{
+<code>{
+  "createTime": "2017-05-12T17:15:12.924+0000",
   "name": "Hello Demo",
-  "currentTask": 0,
-  "id": "396ab4b863244dd5bf376813d94f9932",
-  "creationDate": "2017-04-03T06:01:51+0000",
-  "startDate": "2017-04-03T06:01:51+0000",
-  "pipelineId": "demo/hello:7b911fe",
-  "status": "STARTED"
+  "id": "faee6bbeaa0246d2a1b62e80eff9ad34",
+  "pipelineId": "demo/hello:c79b58e",
+  "status": "CREATED",
+  "tags": [
+    "hello",
+    "world"
+  ]
 }
-</code>
-</pre>
+</code></pre>
 				<h5 class="title"><strong>Check Job Status</strong></h5>
 				
 				<p>URL:</p>
