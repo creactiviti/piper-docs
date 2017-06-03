@@ -258,7 +258,7 @@ tasks:
 
 				<p><strong>Fork/Join</strong></p>
 				
-				<p>Executes each branch in the <code>branches</code> as a seperate and isolated sub-flow. Branches are executed in sequence.</p>
+				<p>Executes each branch in the <code>branches</code> as a seperate and isolated sub-flow. Branches are executed internally in sequence.</p>
 				
 <pre><code>- type: fork
   branches: 
@@ -280,7 +280,24 @@ tasks:
        - type: sleep
          millis: ${randomNumber}
 </code></pre>
+
+
+				<p><strong>Switch</strong></p>
 				
+				<p>Executes one and only one branch of execution based on the <code>expression</code> value.</p>
+				
+<pre><code>- type: switch
+  expression: ${selector} &lt;-- determines which case will be executed
+  cases: 
+     - key: hello                 &lt;-- case 1 start here
+       tasks: 
+         - type: print
+           text: hello world
+     - key: bye                   &lt;-- case 2 start here
+       tasks: 
+         - type: print
+           text: goodbye world
+</code></pre>
 				
 
 			</section>
