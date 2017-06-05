@@ -298,6 +298,23 @@ tasks:
          - type: print
            text: goodbye world
 </code></pre>
+
+
+				<p><strong>Map</strong></p>
+				
+				<p>Produces a new collection of values by mapping each value in <code>list</code> through the <code>iteratee</code> function. 
+				The <code>iteratee</code> is called with an item from <code>list</code> in parallel. 
+				When the <code>iteratee</code> is finished executing on all items the <code>map</code> task will return a list of execution 
+				results in an order which corresponds to the order of the source <code>list</code> .</p>
+				
+<pre>
+<code>- name: fileSizes 
+  type: map
+  list: ["/path/to/file1.txt","/path/to/file2.txt","/path/to/file3.txt"]
+  iteratee:
+    type: filesize         
+    file: ${item}
+</code></pre>
 				
 
 			</section>
